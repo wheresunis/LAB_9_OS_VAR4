@@ -8,7 +8,7 @@ messageWindow::messageWindow(QWidget *parent, std::string data)
 {
     ui->setupUi(this);
     logWin=data;
-    ui->label_2->text().append(logWin);
+    ui->label_2->setText("Signed in as: " + QString::fromStdString(logWin));
 }
 
 messageWindow::~messageWindow()
