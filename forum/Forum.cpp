@@ -6,7 +6,7 @@ void setConsoleTextColor(WORD color) {
     SetConsoleTextAttribute(hConsole, color);
 }
 
-// Прийом повідомлення від користувача
+// РџСЂРёР№РѕРј РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ РІС–Рґ РєРѕСЂРёСЃС‚СѓРІР°С‡Р°
 std::string receiveMessageFromUser() {
     HANDLE pipe = CreateNamedPipe(
         TEXT("\\\\.\\pipe\\ForumPipe"),
@@ -28,7 +28,7 @@ std::string receiveMessageFromUser() {
 
     return std::string(buffer);
 }
-// Надсилання повідомлення серверу
+// РќР°РґСЃРёР»Р°РЅРЅСЏ РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ СЃРµСЂРІРµСЂСѓ
 bool sendToServer(const std::string& message) {
     HANDLE pipe = CreateFile(TEXT("\\\\.\\pipe\\ServerPipe"), GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
     if (pipe == INVALID_HANDLE_VALUE) {
@@ -42,7 +42,7 @@ bool sendToServer(const std::string& message) {
     return true;
 }
 
-// Прийом відповіді від сервера
+// РџСЂРёР№РѕРј РІС–РґРїРѕРІС–РґС– РІС–Рґ СЃРµСЂРІРµСЂР°
 void receiveServerResponse() {
     HANDLE pipe = CreateNamedPipe(
         TEXT("\\\\.\\pipe\\ResponsePipe"),
@@ -64,16 +64,16 @@ void receiveServerResponse() {
 
     std::string response(buffer);
     if (response.find("APPROVED") != std::string::npos) {
-        setConsoleTextColor(10); // Зелений колір
+        setConsoleTextColor(10); // Р—РµР»РµРЅРёР№ РєРѕР»С–СЂ
         std::cout << "Message published: \n";
-        std::cout << response.substr(response.find('\n') + 1) << "\n\n"; // Вивести цензуроване повідомлення
+        std::cout << response.substr(response.find('\n') + 1) << "\n\n"; // Р’РёРІРµСЃС‚Рё С†РµРЅР·СѓСЂРѕРІР°РЅРµ РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ
     }
     else {
-        setConsoleTextColor(12); // Червоний колір
+        setConsoleTextColor(12); // Р§РµСЂРІРѕРЅРёР№ РєРѕР»С–СЂ
         std::cout << "Message rejected due to excessive banned words.\n\n";
     }
 
-    setConsoleTextColor(7); // Повернення до стандартного кольору
+    setConsoleTextColor(7); // РџРѕРІРµСЂРЅРµРЅРЅСЏ РґРѕ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ РєРѕР»СЊРѕСЂСѓ
 }
 
 
@@ -89,7 +89,7 @@ int main() {
         if (!sendToServer(message)) {
             std::cerr << "Error: Could not send message to server.\n";
             continue;
-        } 
+        }
 
         receiveServerResponse();
     }
